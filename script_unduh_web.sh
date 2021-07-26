@@ -11,3 +11,7 @@ echo "download social media site"
 wget -O social-media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
 echo "extracting social media site to /var/www/html"
 sudo unzip social-media.zip -d /var/www/html/
+echo "creating table for social media site"
+sudo mysqldump -u root -p /var/www/html/social-media-master/dump.sql > social_media.sql
+echo "done"
+exit 1
