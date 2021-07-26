@@ -13,6 +13,7 @@ select fav in "${install[@]}"; do
             echo "Installing $fav"
 	        # melakukan instalasi Mysql database
             echo "installing mysql as $fav"
+            sudo apt-get install mysql-server
 	    break
             ;;
 	"Quit")
