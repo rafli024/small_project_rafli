@@ -8,11 +8,11 @@ wget -O wordpress-id.tar.gz https://id.wordpress.org/latest-id_ID.tar.gz
 echo "extracting to /var/www/html"
 sudo tar -xzvf wordpress-id.tar.gz -C /var/www/html
 echo "download social media site"
-wget -O social-media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
+wget -O social_media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
 echo "extracting social media site to /var/www/html"
 sudo unzip social-media.zip -d /var/www/html
 echo "creating table for social media site"
-sudo mysql -u root -p -e "create database sosial_media"
+sudo mysql -u root -p -e "create database sosial_media_master"
 sudo mysql -u root -p sosial_media < /var/www/html/sosial-media-master/dump.sql
 echo "done"
 exit 1
