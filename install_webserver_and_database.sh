@@ -22,13 +22,19 @@ select fav in "${install[@]}"; do
             sudo unzip landing-page.zip -d /var/www/html
             echo "download wordpress site"
             wget -O wordpress-id.tar.gz https://id.wordpress.org/latest-id_ID.tar.gz
-            echo "extracting to /var/www/html"
+            echo "extracting content to /var/www/html"
             sudo tar -xzvf wordpress-id.tar.gz -C /var/www/html
             echo "download social media site"
             wget -O social_media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
             echo "extracting social media site to /var/www/html"
             sudo unzip social-media.zip -d /var/www/html
+            echo "copy wordpress conf file"
+            sudo cp wordpress.conf /etc/apache2/sites-available/wordpress.conf
             echo "configuring database"
+            sudo mysql -u root -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
+            sudo mysql -u root -p -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '1234567890';"
+            sudo mysql -u root -p -e "GRANT ALL PRIVILEGES ON * . * TO 'wordpress'@'localhost';"
+            sudo mysql -u root -p -e "FLUSH PRIVILEGES;"
             echo "creating dbusername and dbpassword"
             sudo mysql -u root -p -e "CREATE USER 'devopscilsy'@'localhost' IDENTIFIED BY '1234567890';"
             sudo mysql -u root -p -e "GRANT ALL PRIVILEGES ON * . * TO 'devopscilsy'@'localhost';"
