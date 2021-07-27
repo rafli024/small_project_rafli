@@ -1,5 +1,5 @@
 #!/bin/bash
-PS3='Pilih paket instalasi yang diinginkan : '
+PS3='Pilih Opsi : '
 install=("Webserver" "Database" "Download web file" "Uninstall" "Quit")
 select fav in "${install[@]}"; do
     case $fav in
