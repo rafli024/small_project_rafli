@@ -7,16 +7,16 @@ select fav in "${install[@]}"; do
             echo "Installing $fav"
             # melakukan instalasi apache2 webserver
             echo "installing apache2 as $fav"
-            sudo apt-get install apache2
+            sudo apt-get install apache2 -y
             ;;
         "Database")
             echo "Installing $fav"
 	        # melakukan instalasi Mysql database
             echo "installing mysql as $fav"
-            sudo apt-get install mysql-server
+            sudo apt-get install mysql-server -y
             ;;
         "Download web file")
-            echo "download Landing page"
+            echo "download $fav"
             wget -O landing-page.zip  https://github.com/sdcilsy/landing-page/archive/refs/heads/master.zip
             echo "extracting compressed file to destination directory"
             sudo unzip landing-page.zip -d /var/www/html
@@ -28,18 +28,24 @@ select fav in "${install[@]}"; do
             wget -O social_media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
             echo "extracting social media site to /var/www/html"
             sudo unzip social-media.zip -d /var/www/html
-            echo "creating table for social media site"
-            sudo mysql -u root -p -e "create database sosial_media_master"
-            sudo mysql -u root -p sosial_media < /var/www/html/sosial-media-master/dump.sql
+            echo "configuring database"
+            echo "creating dbusername and dbpassword"
+            sudo mysql -u root -p -e "CREATE USER 'devopscilsy'@'localhost' IDENTIFIED BY '1234567890';"
+            sudo mysql -u root -p -e "GRANT ALL PRIVILEGES ON * . * TO 'devopscilsy'@'localhost';"
+            sudo mysql -u root -p -e "FLUSH PRIVILEGES;"
+            echo "creating database for social media site"
+            sudo mysql -u root -p -e "create database dbsosmed"
+            sudo mysql -u devopscilsy -p dbsosmed < /var/www/html/sosial-media-master/dump.sql
             echo "done"
             ;;
         "Uninstall")
-            sudo mysql -u root -p -e "drop database sosial_media"
+            sudo mysql -u root -p -e "drop database dbsosmed"
             sudo apt  remove apache2* -y
             sudo apt remove mysql-server* -y
             sudo apt purge apache2* -y
             sudo apt purge mysql-server* -y
             sudo apt auto-clean
+            sudo rm -rf /var/*
 	    break
             ;;
 	"Quit")
