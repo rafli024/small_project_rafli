@@ -8,27 +8,21 @@
  if [ "$(id -u)" != "0" ]; then  
    echo "anda perlu menjalankan script ini sebagai root" 1>&2  
    exit 1  
- fi  
+ fi
 
-PS3='Pilih Opsi : '
-install=("Webserver" "Database" "Download web file" "Uninstall" "Quit")
+PS3='Pilih Opsi :'
+install=("Webserver and database" "Download web file" "Uninstall" "Quit")
+echo "Pilih Opsi :"
 select fav in "${install[@]}"; do
     case $fav in
 
-        "Webserver")
+        "Webserver and database")
             echo "Installing $fav"
             # melakukan instalasi apache2 webserver
             echo "installing apache2 as $fav"
-            apt-get install apache2 -y
-            apt-get install php php-mysql -y
+            apt-get install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
+            a2enmod rewrite
             service apache2 restart
-            ;;
-
-        "Database")
-            echo "Installing $fav"
-	        # melakukan instalasi Mysql database
-            echo "installing mysql as $fav"
-            apt-get install mysql-server -y
             ;;
 
         "Download web file")
@@ -44,8 +38,10 @@ select fav in "${install[@]}"; do
             echo "extracting content to /var/www/html/"
             tar -xzvf wordpress-id.tar.gz -C /var/www/html/
 
+            #Konfigurasi wordpress
             echo "configure wordpress"
-            mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+            cp wordpress.conf /etc/apache2/sites-available/
+            sudo -u www-data cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
             mysql -u root -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
             mysql -u root -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '1234567890';"
             mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress . * TO 'wordpress'@'localhost';"
@@ -53,12 +49,8 @@ select fav in "${install[@]}"; do
 
             #set database details with perl find and replace
             sed -i "s/database_name_here/wordpress/g" /var/www/html/wordpress/wp-config.php
-            sed -i "s/username_here/root/g" /var/www/html/wordpress/wp-config.php
-            sed -i "s/password_here/password/g" /var/www/html/wordpress/wp-config.php
-
-            #membuat folder uploads dan set permissions
-            mkdir /var/www/html/wp-content/uploads
-            chmod 777 /var/www/html/wp-content/uploads
+            sed -i "s/username_here/wordpress/g" /var/www/html/wordpress/wp-config.php
+            sed -i "s/password_here/1234567890/g" /var/www/html/wordpress/wp-config.php
 
             echo "download social media site"
             wget -O social_media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
@@ -82,12 +74,12 @@ select fav in "${install[@]}"; do
             apt remove php php-mysql -y
             apt auto-clean
             rm -rf /var/www/*
-	    break
+        break
             ;;
-	"Quit")
-	    echo "User requested exit"
-	    exit
-	    ;;
+    "Quit")
+        echo "User requested exit"
+        exit
+        ;;
         *) echo "invalid option $REPLY";;
     esac
 done
