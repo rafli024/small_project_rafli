@@ -4,7 +4,7 @@
  # Bash script for small project 1
  # Author: Rafli
 
-## Check if running as root  
+## Check if running as root
  if [ "$(id -u)" != "0" ]; then  
    echo "anda perlu menjalankan script ini sebagai root" 1>&2  
    exit 1  
@@ -52,6 +52,10 @@ select fav in "${install[@]}"; do
             sed -i "s/username_here/wordpress/g" /var/www/html/wordpress/wp-config.php
             sed -i "s/password_here/1234567890/g" /var/www/html/wordpress/wp-config.php
 
+            echo "change into salt key"
+            SALT=$(cat saltkey.txt)
+            printf '%s\n' "g/'put your unique phrase here'/d" a "$SALT" . w | ed -s  /var/www/html/wordpress/wp-config.php
+            
             echo "download social media site"
             wget -O social_media.zip https://github.com/sdcilsy/sosial-media/archive/refs/heads/master.zip
 
@@ -69,10 +73,8 @@ select fav in "${install[@]}"; do
             echo "done"
             ;;
         "Uninstall")
-            apt remove apache2* -y
-            apt remove mysql-server* -y
-            apt remove php php-mysql -y
-            apt auto-clean
+            apt remove --purge apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
+            apt autoremove
             rm -rf /var/www/*
         break
             ;;
