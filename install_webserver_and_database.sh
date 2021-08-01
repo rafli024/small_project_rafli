@@ -75,9 +75,8 @@ select fav in "${install[@]}"; do
             ;;
         "Uninstall")
             apt remove --purge apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
-            apt autoremove -ycd
+            apt autoremove -y
             rm -rf /var/www/*
-            rm /etc/apache2/sites-available/wordpress.conf
         break
             ;;
     "Quit")
