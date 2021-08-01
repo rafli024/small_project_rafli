@@ -20,6 +20,7 @@ select fav in "${install[@]}"; do
             echo "Installing $fav"
             # melakukan instalasi apache2 webserver
             echo "installing apache2 as $fav"
+            apt-get update
             apt-get install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
             a2enmod rewrite
             service apache2 restart
@@ -41,7 +42,7 @@ select fav in "${install[@]}"; do
             #Konfigurasi wordpress
             echo "configure wordpress"
             cp wordpress.conf /etc/apache2/sites-available/
-            sudo -u www-data cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+            cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
             mysql -u root -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
             mysql -u root -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '1234567890';"
             mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress . * TO 'wordpress'@'localhost';"
@@ -74,8 +75,9 @@ select fav in "${install[@]}"; do
             ;;
         "Uninstall")
             apt remove --purge apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
-            apt autoremove
+            apt autoremove -ycd
             rm -rf /var/www/*
+            rm /etc/apache2/sites-available/wordpress.conf
         break
             ;;
     "Quit")
