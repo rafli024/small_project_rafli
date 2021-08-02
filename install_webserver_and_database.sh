@@ -10,7 +10,7 @@
    exit 1  
  fi
 
-PS3='Pilih Opsi :'
+PS3='Pilih Opsi : '
 install=("Webserver and database" "Download web file" "Uninstall" "Quit")
 echo "Pilih Opsi :"
 select fav in "${install[@]}"; do
@@ -24,6 +24,7 @@ select fav in "${install[@]}"; do
             apt-get install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
             a2enmod rewrite
             service apache2 restart
+            echo "service apache2 restart"
             ;;
 
         "Download web file")
@@ -74,9 +75,15 @@ select fav in "${install[@]}"; do
             echo "done"
             ;;
         "Uninstall")
+            mysql -u root -e "drop user 'devopscilsy'@'localhost';"
+            mysql -u root -e "drop user 'wordpress'@'localhost';"
+            mysql -u root -e "drop database dbsosmed;"
+            mysql -u root -e "drop database wordpress"
+            rm -rf /var/www/*
+            rm /etc/apache2/sites-available/wordpress.conf
             apt remove --purge apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
             apt autoremove -y
-            rm -rf /var/www/*
+            rm -f landing-page.zip social_media.zip wordpress-id.tar.gz
         break
             ;;
     "Quit")
