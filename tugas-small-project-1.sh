@@ -75,10 +75,16 @@ select fav in "${install[@]}"; do
             echo "done"
             ;;
         "Uninstall")
+        
+            #menghapus database dan user dari database
+            echo "deleting database from mysql"
             mysql -u root -e "drop user 'devopscilsy'@'localhost';"
             mysql -u root -e "drop user 'wordpress'@'localhost';"
             mysql -u root -e "drop database dbsosmed;"
             mysql -u root -e "drop database wordpress"
+
+            #menghapus aplikasi, unduhan dan konfigurasi yang sudah dibuat
+            echo "removing config file, downloads, and apps"
             rm -rf /var/www/*
             rm /etc/apache2/sites-available/wordpress.conf
             apt remove --purge apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip -y
