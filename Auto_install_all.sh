@@ -57,4 +57,5 @@
             mysql -u root -e "FLUSH PRIVILEGES;"
             mysql -u root dbsosmed < /var/www/html/sosial-media-master/dump.sql
             echo "done"
+            exit 1
     
