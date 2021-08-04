@@ -31,7 +31,7 @@
             sed -i "s/password_here/1234567890/g" /var/www/html/wordpress/wp-config.php
 
             echo "change into salt key"
-            SALT=$(cat saltkey.txt)
+            SALT=$(curl -L https://api.wordpress.org/secret-key/1.1/salt/)
             printf '%s\n' "g/'put your unique phrase here'/d" a "$SALT" . w | ed -s  /var/www/html/wordpress/wp-config.php
             
             echo "download social media site"
