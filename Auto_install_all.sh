@@ -4,7 +4,7 @@
  # Bash script for autoscaling
  # Author: Rafli
 
-            echo "Installing $fav"
+            echo "Installing apache dan webserver"
             # melakukan instalasi apache2 webserver
             echo "installing apache2 as $fav"
             apt-get update
@@ -13,7 +13,7 @@
             service apache2 restart
             echo "service apache2 restart"
     
-            echo "download $fav"
+            echo "download landing page"
             # proses instalasi landing-page ke dalam webserver
             wget -O landing-page.zip  https://github.com/sdcilsy/landing-page/archive/refs/heads/master.zip
             echo "extracting compressed file to destination directory"
