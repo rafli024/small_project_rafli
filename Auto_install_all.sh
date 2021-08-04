@@ -6,7 +6,6 @@
 
             echo "Installing apache dan webserver"
             # melakukan instalasi apache2 webserver
-            echo "installing apache2 as $fav"
             apt-get update
             apt-get install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip unzip -y
             a2enmod rewrite
