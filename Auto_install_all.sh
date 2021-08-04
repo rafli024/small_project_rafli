@@ -4,14 +4,6 @@
  # Bash script for autoscaling
  # Author: Rafli
 
-            echo "Installing apache dan webserver"
-            # melakukan instalasi apache2 webserver
-            apt-get update
-            apt-get install apache2 ghostscript libapache2-mod-php mysql-server php php-bcmath php-curl php-imagick php-intl php-json php-mbstring php-mysql php-xml php-zip unzip -y
-            a2enmod rewrite
-            service apache2 restart
-            echo "service apache2 restart"
-    
             echo "download landing page"
             # proses instalasi landing-page ke dalam webserver
             wget -O landing-page.zip  https://github.com/sdcilsy/landing-page/archive/refs/heads/master.zip
