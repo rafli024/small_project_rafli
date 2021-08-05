@@ -20,11 +20,7 @@
             echo "configure wordpress"
             cp wordpress.conf /etc/apache2/sites-available/
             cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
-            mysql -u root -e "CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-            mysql -u root -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '1234567890';"
-            mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress . * TO 'wordpress'@'localhost';"
-            mysql -u root -e "FLUSH PRIVILEGES;"
-
+ 
             #set database details with perl find and replace
             sed -i "s/database_name_here/wordpress/g" /var/www/html/wordpress/wp-config.php
             sed -i "s/username_here/wordpress/g" /var/www/html/wordpress/wp-config.php
@@ -39,15 +35,5 @@
 
             echo "extracting social media site to /var/www/html"
             unzip social_media.zip -d /var/www/html/
-
-            echo "configuring database"
-            echo "creating database for social media site"
-            mysql -u root -e "create database dbsosmed"
-            echo "creating dbusername and dbpassword"
-            mysql -u root -e "CREATE USER 'devopscilsy'@'localhost' IDENTIFIED BY '1234567890';"
-            mysql -u root -e "GRANT ALL PRIVILEGES ON dbsosmed . * TO 'devopscilsy'@'localhost';"
-            mysql -u root -e "FLUSH PRIVILEGES;"
-            mysql -u root dbsosmed < /var/www/html/sosial-media-master/dump.sql
-            echo "done"
             exit 1
     
